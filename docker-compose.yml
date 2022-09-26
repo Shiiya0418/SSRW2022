@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  torch-gpu-app:
+    image: shiiya/torch-gpu:SSRW
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/sources
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    container_name: torch-app-gpu-SSRW

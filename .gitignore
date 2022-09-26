@@ -1,0 +1,6 @@
+.Trash*
+.ipynb_checkpoints
+__pycache__
+test
+train
+sample*
