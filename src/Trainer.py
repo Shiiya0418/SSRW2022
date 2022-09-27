@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import numpy as np
-from tqdm import tqdm
+from tqdm.notebook import tqdm
 from torch.utils.data import Dataset, DataLoader
 import glob
 import pickle
@@ -29,7 +29,7 @@ class Trainer:
         self.optimizer = optimizer
     
     def detach(self, states):
-        return [states.detach() for state in states]
+        return [state.detach() for state in states]
     
     def train(self, epochs: int=20, batch_size: int=16, hidden_dim:int=128):
         self.train_loss_list =[]
@@ -120,10 +120,10 @@ class DatasetHolder():
         all_ratio = train_ratio+valid_ratio+test_ratio
         all_indexes = list(range(0, dataset_size))
         train_sample = random.sample(all_indexes,
-                                     k=dataset_size*(train_ratio/all_ratio))
+                                     k=int(dataset_size*(train_ratio/all_ratio)))
         remain_indexes = [e for e in all_indexes if not (e in train_sample)]
         valid_sample = random.sample(remain_indexes,
-                                     k=dataset_size*(valid_ratio/all_ratio))
+                                     k=int(dataset_size*(valid_ratio/all_ratio)))
         test_sample = [e for e in remain_indexes if not (e in valid_sample)]
 
         self.train_list = [dir_path for i, dir_path in enumerate(self.data_dir_list) if i in train_sample]
@@ -194,7 +194,7 @@ class SpeakingDataset(Dataset):
 
         # 入力データ
         images = []
-        print(f'index: {index} path: {train_path}')
+        # print(f'index: {index} path: {train_path}')
         for image_path in sorted(glob.glob(train_path + '/*')):
             img = Image.open(image_path)
             if self.is_test:
