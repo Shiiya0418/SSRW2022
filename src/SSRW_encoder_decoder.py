@@ -42,7 +42,9 @@ class SSRWEncoderDecoder(nn.Module):
         # pool3 (BATCH_SIZE, 64, 8, 8)
         self.lstm_encoder = Encoder(64*8*8, self.hidden_dim_encoder)
         self.lstm_decoder = Decoder(self.vocab_size, 64*8*8, self.hidden_dim_decoder)
-    
+
+        # TODO: パラメータの初期化処理
+
     def forward(self, x_seq, h):
         # (seq, BATCH, channel, width, height) へ変更
         x_seq = x_seq.reshape(x_seq.shape[1],
@@ -81,6 +83,7 @@ class SSRWEncoderDecoder(nn.Module):
         h = self.lstm_encoder(x, h)
         x = x[:, :, -1]
         x, h = self.lstm_decoder(x, h)
+        x = x.reshape(int(x.shape[0]*x.shape[1]), int(x.shape[2]))
         return x, h
 
 class Encoder(nn.Module):

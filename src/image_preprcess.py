@@ -19,6 +19,7 @@ def image_preprocess():
             img = Image.open(filename)
             img = transform(img)
             img.save(dir_name+'/'+filename[-9:])
+            print(filename)
 
 def transforms_maker():
     transform = transforms.Compose(
